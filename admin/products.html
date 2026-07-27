@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm - Admin ĐẠT TESLA MOTORS</title>
+    
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<script>
+fetch("/api/auth/me")
+.then(res=>res.json())
+.then(data=>{
+if(!data.logged || data.role !== "admin"){
+window.location.href="/login.html";
+}
+});
+</script>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="logo">
+                <div class="logo-icon">ĐT</div>
+                <div class="logo-text" style="color: white;">
+                    <span>ADMIN</span>
+                    TESLA MOTORS
+                </div>
+            </div>
+            
+            <ul class="admin-nav">
+                <li><a href="/admin/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/products.html" class="active"><i class="fas fa-car"></i> Sản phẩm</a></li>
+                <li><a href="/admin/orders.html"><i class="fas fa-shopping-bag"></i> Đơn hàng</a></li>
+                <li><a href="/admin/news.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+                <li><a href="/admin/settings.html"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Quản lý sản phẩm</h1>
+                <button class="btn btn-primary" onclick="showAddModal()">
+                    <i class="fas fa-plus"></i> Thêm sản phẩm
+                </button>
+            </div>
+            
+            <!-- Products Table -->
+            <div class="admin-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Giá</th>
+                            <th>Nổi bật</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add/Edit Modal -->
+    <div id="productModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto;">
+        <div style="max-width: 700px; margin: 50px auto; background: var(--bg-card); border-radius: 20px; padding: 40px;">
+            <h2 id="modalTitle" style="margin-bottom: 30px;">Thêm sản phẩm</h2>
+            <form id="productForm" enctype="multipart/form-data">
+                <input type="hidden" id="productId" name="id">
+                
+                <div class="form-group">
+                    <label>Tên sản phẩm *</label>
+                    <input type="text" name="name" id="productName" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Danh mục</label>
+                        <select name="category_id" id="productCategory">
+                            <option value="">-- Chọn danh mục --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá (VNĐ) *</label>
+                        <input type="number" name="price" id="productPrice" required>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Phạm vi (km)</label>
+                        <input type="number" name="range_km" id="productRange">
+                    </div>
+                    <div class="form-group">
+                        <label>Tốc độ max (km/h)</label>
+                        <input type="number" name="top_speed" id="productSpeed">
+                    </div>
+                    <div class="form-group">
+                        <label>0-100 km/h (giây)</label>
+                        <input type="number" step="0.1" name="acceleration" id="productAccel">
+                    </div>
+                    <div class="form-group">
+                        <label>Công suất (hp)</label>
+                        <input type="number" name="horsepower" id="productPower">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea name="description" id="productDesc" rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Hình ảnh</label>
+                    <input type="file" name="image" id="productImage" accept="image/*">
+                    <img id="imagePreview" style="max-width: 200px; margin-top: 10px; display: none; border-radius: 10px;">
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" name="is_featured" id="productFeatured">
+                        <span>Sản phẩm nổi bật</span>
+                    </label>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="toast-container"></div>
+    
+    <script>
+        let products = [];
+        let categories = [];
+        let editingId = null;
+        
+        // Check auth
+        fetch('/api/auth/check')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success) window.location.href = '/admin/login.html';
+            })
+            .catch(() => window.location.href = '/admin/login.html');
+        
+        // Load categories
+        fetch('/api/categories')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    categories = data.data;
+                    const select = document.getElementById('productCategory');
+                    categories.forEach(cat => {
+                        select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+                    });
+                }
+            });
+        
+        // Load products
+        function loadProducts() {
+            fetch('/api/products')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        products = data.data;
+                        renderProducts();
+                    }
+                });
+        }
+        loadProducts();
+        
+        function renderProducts() {
+            const tbody = document.getElementById('productsTable');
+            
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">Chưa có sản phẩm nào</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = products.map(p => `
+                <tr>
+                    <td><img src="${p.image || '/images/placeholder-car.jpg'}" alt="${p.name}"></td>
+                    <td><strong>${p.name}</strong></td>
+                    <td>${p.category_name || '-'}</td>
+                    <td>${formatCurrency(p.price)}</td>
+                    <td>${p.is_featured ? '<i class="fas fa-star" style="color: gold;"></i>' : '-'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn edit" onclick="editProduct(${p.id})" title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteProduct(${p.id})" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function showAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Thêm sản phẩm';
+            document.getElementById('productForm').reset();
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('productModal').style.display = 'block';
+        }
+        
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Sửa sản phẩm';
+            document.getElementById('productId').value = id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category_id || '';
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productRange').value = product.range_km || '';
+            document.getElementById('productSpeed').value = product.top_speed || '';
+            document.getElementById('productAccel').value = product.acceleration || '';
+            document.getElementById('productPower').value = product.horsepower || '';
+            document.getElementById('productDesc').value = product.description || '';
+            document.getElementById('productFeatured').checked = product.is_featured;
+            
+            if (product.image) {
+                document.getElementById('imagePreview').src = product.image;
+                document.getElementById('imagePreview').style.display = 'block';
+            }
+            
+            document.getElementById('productModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+        
+        document.getElementById('productImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            formData.set('is_featured', document.getElementById('productFeatured').checked);
+            
+            const url = editingId ? `/api/products/${editingId}` : '/api/products';
+            const method = editingId ? 'PUT' : 'POST';
+            
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast(editingId ? 'Cập nhật thành công!' : 'Thêm sản phẩm thành công!', 'success');
+                    closeModal();
+                    loadProducts();
+                } else {
+                    showToast('Lỗi: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showToast('Có lỗi xảy ra', 'error');
+            }
+        });
+        
+        async function deleteProduct(id) {
+            if (!confirm('Bạn có chắc muốn xóa sản phẩm này?')) return;
+            
+            try {
+                const response = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Xóa thành công!', 'success');
+                    loadProducts();
+                } else {
+                    showToast('Lỗi: ' + result.message, 'error');
+                }
+            } catch (error) {
+                showToast('Có lỗi xảy ra', 'error');
+            }
+        }
+        
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
+        }
+        
+        function showToast(message, type) {
+            const container = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function logout() {
+            fetch('/api/auth/logout', { method: 'POST' }).then(() => window.location.href = '/admin/login.html');
+        }
+        
+        // Theme
+        const theme = localStorage.getItem('tesla_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</body>
+</html>

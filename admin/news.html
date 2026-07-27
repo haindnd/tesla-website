@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<title>Tin tức - Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<script>
+fetch("/api/auth/me")
+.then(res=>res.json())
+.then(data=>{
+if(!data.logged || data.role !== "admin"){
+window.location.href="/login.html";
+}
+});
+</script>
+
+<body>
+
+<div class="admin-layout">
+
+<!-- SIDEBAR -->
+
+<aside class="admin-sidebar">
+
+<div class="logo">
+<div class="logo-icon">ĐT</div>
+<div class="logo-text" style="color:white">
+<span>ADMIN</span>
+TESLA MOTORS
+</div>
+</div>
+
+<ul class="admin-nav">
+
+<li><a href="/admin/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+<li><a href="/admin/products.html"><i class="fas fa-car"></i> Sản phẩm</a></li>
+
+<li><a href="/admin/orders.html"><i class="fas fa-shopping-bag"></i> Đơn hàng</a></li>
+
+<li><a href="/admin/news.html" class="active"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+
+<li><a href="/admin/settings.html"><i class="fas fa-cog"></i> Cài đặt</a></li>
+
+</ul>
+
+</aside>
+
+<!-- CONTENT -->
+
+<main class="admin-content">
+
+<div class="admin-header">
+<h1>Quản lý tin tức</h1>
+</div>
+
+<div class="admin-table">
+
+<div style="padding:20px;border-bottom:1px solid var(--border-color)">
+<h3>Thêm tin</h3>
+</div>
+
+<form id="newsForm" style="padding:20px" enctype="multipart/form-data">
+
+<input name="title" placeholder="Tiêu đề" required>
+
+<br><br>
+
+<textarea name="content" placeholder="Nội dung"></textarea>
+
+<br><br>
+
+<input type="file" name="thumbnail">
+
+<br><br>
+
+<button class="btn btn-primary">Đăng tin</button>
+
+</form>
+
+</div>
+
+<div class="admin-table" style="margin-top:30px">
+
+<div style="padding:20px;border-bottom:1px solid var(--border-color)">
+<h3>Danh sách tin</h3>
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Ảnh</th>
+<th>Tiêu đề</th>
+<th>Ngày</th>
+<th>Hành động</th>
+</tr>
+</thead>
+
+<tbody id="newsTable"></tbody>
+
+</table>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+loadNews()
+
+function loadNews(){
+
+fetch('/api/news')
+.then(res => res.json())
+.then(data => {
+
+const tbody = document.getElementById("newsTable")
+
+tbody.innerHTML = data.data.map(news => `
+<tr>
+
+<td>${news.id}</td>
+
+<td>
+<img src="${news.thumbnail}" 
+style="width:120px;height:70px;object-fit:cover;border-radius:6px">
+</td>
+
+<td>${news.title}</td>
+
+<td>${new Date(news.created_at).toLocaleDateString('vi-VN')}</td>
+
+<td>
+<button onclick="editNews(${news.id})">Sửa</button>
+<button onclick="deleteNews(${news.id})">Xóa</button>
+</td>
+
+</tr>
+`).join("")
+
+})
+
+}
+
+document.getElementById("newsForm").addEventListener("submit",async function(e){
+
+e.preventDefault()
+
+const formData=new FormData(this)
+
+const res=await fetch("/api/news",{
+method:"POST",
+body:formData
+})
+
+const data = await res.json()
+
+if(data.success){
+alert("Thêm tin thành công")
+loadNews()
+}else{
+alert(data.message || "Thêm thất bại")
+}
+
+loadNews()
+
+})
+
+function deleteNews(id){
+
+fetch('/api/news/'+id,{
+method:"DELETE"
+}).then(()=>loadNews())
+
+}
+function deleteNews(id){
+
+fetch('/api/news/'+id,{
+method:"DELETE"
+}).then(()=>loadNews())
+
+}
+
+
+function editNews(id){
+
+window.location.href="/admin/edit-news.html?id="+id
+
+}
+
+</script>
+
+</body>
+</html>

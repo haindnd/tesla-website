@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập Admin - ĐẠT TESLA MOTORS</title>
+    
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--tesla-black) 0%, #2c2f36 100%);
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: var(--bg-card);
+            padding: 50px 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo .logo-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        
+        .login-container h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .login-container p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .login-form .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .login-form .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: var(--transition);
+        }
+        
+        .login-form .form-group input:focus {
+            outline: none;
+            border-color: var(--tesla-red);
+            box-shadow: 0 0 0 3px rgba(232, 33, 39, 0.1);
+        }
+        
+        .login-form .btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+        }
+        
+        .login-error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .back-link {
+            display: block;
+            margin-top: 24px;
+            color: var(--text-secondary);
+        }
+        
+        .back-link:hover {
+            color: var(--tesla-red);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-logo">
+                <div class="logo-icon">ĐT</div>
+                <div class="logo-text">
+                    <span style="font-size: 0.75rem; color: var(--tesla-red); font-weight: 600; letter-spacing: 2px;">ĐẠT</span>
+                    <div style="font-size: 1.2rem; font-weight: 700;">TESLA MOTORS</div>
+                </div>
+            </div>
+            
+            <h1>Đăng nhập Admin</h1>
+            <p>Nhập thông tin để truy cập trang quản trị</p>
+            
+            <div class="login-error" id="loginError">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Tên đăng nhập hoặc mật khẩu không đúng</span>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Tên đăng nhập</label>
+                    <input type="text" id="username" name="username" required placeholder="Nhập tên đăng nhập">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Mật khẩu</label>
+                    <input type="password" id="password" name="password" required placeholder="Nhập mật khẩu">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                </button>
+            </form>
+            
+            <a href="/" class="back-link">
+                <i class="fas fa-arrow-left"></i> Quay lại trang chủ
+            </a>
+        </div>
+    </div>
+    
+<script>
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorDiv = document.getElementById('loginError');
+
+    fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            if(data.role === "admin"){
+                window.location.href = '/admin/dashboard.html';
+            } else {
+                window.location.href = '/';
+            }
+        } else {
+            errorDiv.style.display = 'block';
+            errorDiv.querySelector('span').textContent = data.message || 'Tên đăng nhập hoặc mật khẩu không đúng';
+        }
+    })
+    .catch(err => {
+        console.error('Login error:', err);
+        errorDiv.style.display = 'block';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        login();
+    });
+});
+
+</script>
+</body>
+</html>

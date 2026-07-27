@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin ĐẠT TESLA MOTORS</title>
+    
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<script>
+fetch('/api/auth/check', {
+    credentials: 'include'
+})
+.then(res => res.json())
+.then(data => {
+    if (!data.success || data.role !== "admin") {
+        window.location.href = '/admin/login.html';
+    }
+});
+</script>   
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="logo">
+                <div class="logo-icon">ĐT</div>
+                <div class="logo-text" style="color: white;">
+                    <span>ADMIN</span>
+                    TESLA MOTORS
+                </div>
+            </div>
+            
+            <ul class="admin-nav">
+                <li><a href="/admin/dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/admin/products.html"><i class="fas fa-car"></i> Sản phẩm</a></li>
+                <li><a href="/admin/orders.html"><i class="fas fa-shopping-bag"></i> Đơn hàng</a></li>
+                <li><a href="/admin/news.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+                <li><a href="/admin/settings.html"><i class="fas fa-cog"></i> Cài đặt</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1>Dashboard</h1>
+                <div>
+                    <span id="adminName">Admin</span>
+                    <button class="theme-toggle" onclick="toggleTheme()" style="margin-left: 15px;">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statProducts">0</h3>
+                        <p>Sản phẩm</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #4CAF50, #45a049);">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statOrders">0</h3>
+                        <p>Đơn hàng</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #FF9800, #F57C00);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statPending">0</h3>
+                        <p>Chờ xử lý</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #2196F3, #1976D2);">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statNews">0</h3>
+                        <p>Tin tức</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Orders -->
+            <div class="admin-table" style="margin-top: 30px;">
+                <div style="padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0;">Đơn hàng gần đây</h3>
+                    <a href="/admin/orders.html" class="btn btn-outline" style="padding: 8px 16px;">Xem tất cả</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày đặt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentOrders">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Check auth
+        fetch('/api/auth/check')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success || data.role !== 'admin') {
+                    window.location.href = '/admin/login.html';
+                } else {
+                    const admin = data.admin || {};
+                    document.getElementById('adminName').textContent = admin.full_name || admin.username || 'Admin';
+                }
+            })
+            .catch(() => {
+                window.location.href = '/admin/login.html';
+            });
+        
+        // Load stats
+        fetch('/api/stats')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('statProducts').textContent = data.data.products;
+                    document.getElementById('statOrders').textContent = data.data.orders;
+                    document.getElementById('statPending').textContent = data.data.pendingOrders;
+                    document.getElementById('statNews').textContent = data.data.news;
+                }
+            });
+        
+        // Load recent orders
+        fetch('/api/orders')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const orders = data.data.slice(0, 5);
+                    const tbody = document.getElementById('recentOrders');
+                    
+                    if (orders.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">Chưa có đơn hàng nào</td></tr>';
+                        return;
+                    }
+                    
+                    tbody.innerHTML = orders.map(order => `
+                        <tr>
+                            <td><strong>${order.order_code}</strong></td>
+                            <td>${order.customer_name}</td>
+                            <td>${formatCurrency(order.total_amount)}</td>
+                            <td><span class="status-badge ${order.status}">${getStatusText(order.status)}</span></td>
+                            <td>${formatDate(order.created_at)}</td>
+                        </tr>
+                    `).join('');
+                }
+            });
+        
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
+        }
+        
+        function formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('vi-VN');
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'Chờ xử lý',
+                'confirmed': 'Đã xác nhận',
+                'shipping': 'Đang giao',
+                'completed': 'Hoàn thành',
+                'cancelled': 'Đã hủy'
+            };
+            return statusMap[status] || status;
+        }
+        
+        function logout() {
+            fetch('/api/auth/logout', { method: 'POST' })
+                .then(() => {
+                    window.location.href = '/admin/login.html';
+                });
+        }
+        
+        // Theme toggle
+        const theme = localStorage.getItem('tesla_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('tesla_theme', newTheme);
+        }
+    </script>
+</body>
+</html>

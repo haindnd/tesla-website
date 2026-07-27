@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<title>Sửa tin tức - Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+<!-- SIDEBAR -->
+
+<aside class="admin-sidebar">
+
+<div class="logo">
+<div class="logo-icon">ĐT</div>
+<div class="logo-text" style="color:white">
+<span>ADMIN</span>
+TESLA MOTORS
+</div>
+</div>
+
+<ul class="admin-nav">
+
+<li><a href="/admin/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+<li><a href="/admin/products.html"><i class="fas fa-car"></i> Sản phẩm</a></li>
+
+<li><a href="/admin/orders.html"><i class="fas fa-shopping-bag"></i> Đơn hàng</a></li>
+
+<li><a href="/admin/news.html" class="active"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+
+<li><a href="/admin/settings.html"><i class="fas fa-cog"></i> Cài đặt</a></li>
+
+</ul>
+
+</aside>
+
+
+<!-- CONTENT -->
+
+<main class="admin-content">
+
+<div class="admin-header">
+<h1>Sửa tin tức</h1>
+</div>
+
+
+<div class="admin-table">
+
+<div style="padding:20px;border-bottom:1px solid var(--border-color)">
+<h3>Chỉnh sửa tin</h3>
+</div>
+
+
+<form id="editForm" style="padding:20px" enctype="multipart/form-data">
+
+<input id="title" name="title" placeholder="Tiêu đề" required>
+
+<br><br>
+
+<textarea id="content" name="content" placeholder="Nội dung" rows="8"></textarea>
+
+<br><br>
+
+<div>
+<p>Ảnh hiện tại:</p>
+<img id="preview" style="width:200px;border-radius:8px">
+</div>
+
+<br>
+
+<input type="file" name="thumbnail">
+
+<br><br>
+
+<button class="btn btn-primary">
+<i class="fas fa-save"></i> Lưu thay đổi
+</button>
+
+<a href="/admin/news.html" class="btn btn-outline" style="margin-left:10px">
+Quay lại
+</a>
+
+</form>
+
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+const id = params.get("id")
+
+loadNews()
+
+
+function loadNews(){
+
+fetch("/api/news/"+id)
+.then(res=>res.json())
+.then(data=>{
+
+const news=data.data
+
+document.getElementById("title").value=news.title
+document.getElementById("content").value=news.content
+
+document.getElementById("preview").src=news.thumbnail
+
+})
+
+}
+
+
+
+document.getElementById("editForm").addEventListener("submit",async function(e){
+
+e.preventDefault()
+
+const formData=new FormData(this)
+
+const res=await fetch("/api/news/"+id,{
+method:"PUT",
+body:formData
+})
+
+const data=await res.json()
+
+if(data.success){
+
+alert("Cập nhật thành công")
+
+window.location="/admin/news.html"
+
+}else{
+
+alert("Cập nhật thất bại")
+
+}
+
+})
+
+
+</script>
+
+</body>
+</html>

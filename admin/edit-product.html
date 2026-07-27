@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<title>Sửa xe</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+<aside class="admin-sidebar">
+
+<div class="logo">
+<div class="logo-icon">ĐT</div>
+<div class="logo-text" style="color:white">
+<span>ADMIN</span>
+TESLA MOTORS
+</div>
+</div>
+
+<ul class="admin-nav">
+<li><a href="/admin/dashboard.html">Dashboard</a></li>
+<li><a href="/admin/products.html">Sản phẩm</a></li>
+<li><a href="/admin/orders.html">Đơn hàng</a></li>
+<li><a href="/admin/news.html">Tin tức</a></li>
+<li><a href="/admin/settings.html">Cài đặt</a></li>
+</ul>
+
+</aside>
+
+<main class="admin-content">
+
+<div class="admin-header">
+<h1>Sửa xe</h1>
+</div>
+
+<div class="admin-table">
+
+<form id="editForm" enctype="multipart/form-data">
+
+<input name="name">
+
+<br><br>
+
+<input name="price">
+
+<br><br>
+
+<textarea name="description"></textarea>
+
+<br><br>
+
+<input type="file" name="image">
+
+<br><br>
+
+<button class="btn btn-primary">Cập nhật</button>
+
+</form>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+
+const id = params.get("id")
+
+document.getElementById("editForm").addEventListener("submit",async function(e){
+
+e.preventDefault()
+
+const formData = new FormData(this)
+
+await fetch("/api/products/"+id,{
+method:"PUT",
+body:formData
+})
+
+alert("Đã cập nhật")
+
+})
+
+</script>
+
+</body>
+</html>

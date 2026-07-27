@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<title>Cài đặt</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<script>
+fetch("/api/auth/me")
+.then(res=>res.json())
+.then(data=>{
+if(!data.logged || data.role !== "admin"){
+window.location.href="/login.html";
+}
+});
+</script>
+
+<body>
+
+<div class="admin-layout">
+
+<aside class="admin-sidebar">
+
+<div class="logo">
+<div class="logo-icon">ĐT</div>
+<div class="logo-text" style="color:white">
+<span>ADMIN</span>
+TESLA MOTORS
+</div>
+</div>
+
+<ul class="admin-nav">
+
+<li><a href="/admin/dashboard.html">Dashboard</a></li>
+
+<li><a href="/admin/products.html">Sản phẩm</a></li>
+
+<li><a href="/admin/orders.html">Đơn hàng</a></li>
+
+<li><a href="/admin/news.html">Tin tức</a></li>
+
+<li><a href="/admin/settings.html" class="active">Cài đặt</a></li>
+
+</ul>
+
+</aside>
+
+<main class="admin-content">
+
+<div class="admin-header">
+<h1>Cài đặt website</h1>
+</div>
+
+<div class="admin-table">
+
+<div style="padding:20px;border-bottom:1px solid var(--border-color)">
+<h3>Thông tin website</h3>
+</div>
+
+<form id="settingsForm" style="padding:20px">
+
+<input name="site_name" placeholder="Tên website">
+
+<br><br>
+
+<input name="email" placeholder="Email">
+
+<br><br>
+
+<input name="phone" placeholder="Số điện thoại">
+
+<br><br>
+
+<button class="btn btn-primary">Lưu</button>
+
+</form>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+loadSettings()
+
+function loadSettings(){
+
+fetch('/api/settings')
+
+.then(res=>res.json())
+
+.then(data=>{
+
+document.querySelector('[name=site_name]').value=data.data.site_name
+document.querySelector('[name=email]').value=data.data.email
+document.querySelector('[name=phone]').value=data.data.phone
+
+})
+
+}
+
+document.getElementById("settingsForm").addEventListener("submit",async function(e){
+
+e.preventDefault()
+
+const formData=new FormData(this)
+
+await fetch('/api/settings',{
+method:"PUT",
+body:formData
+})
+
+alert("Đã lưu cài đặt")
+
+})
+
+</script>
+
+</body>
+</html>

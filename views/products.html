@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm - ĐẠT TESLA</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (ICON QUAN TRỌNG) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS của bạn -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <span>🚗 Miễn phí giao xe toàn quốc - Bảo hành chính hãng 8 năm</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="images/uploads/nen.png" alt="logo">
+                <div class="logo-text">
+                    <span>ĐẠT</span>
+                    TESLA MOTORS
+                </div>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="/">Trang chủ</a></li>
+                <li><a href="/products" class="active">Sản phẩm</a></li>
+                <li><a href="/news">Tin tức</a></li>
+                <li><a href="/#features">Tại sao chọn Tesla?</a></li>
+                <li><a href="/#contact">Liên hệ</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm kiếm xe...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <a href="/cart" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+                
+                <button class="theme-toggle" title="Chuyển đổi theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <div class="mobile-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu">
+        <div class="mobile-menu-close"><i class="fas fa-times"></i></div>
+        <a href="/">Trang chủ</a>
+        <a href="/products">Sản phẩm</a>
+        <a href="/news">Tin tức</a>
+        <a href="/why-tesla">Tại sao chọn Tesla?</a>
+        <a href="/cart">Giỏ hàng</a>
+    </div>
+
+    <div class="page-header">
+        <h1>Sản Phẩm</h1>
+        <div class="breadcrumb">
+            <a href="/">Trang chủ</a>
+            <span>/</span>
+            <span>Sản Phẩm</span>
+        </div>
+    </div>
+
+<!-- PRODUCTS -->
+<section class="section">
+        <div class="products-grid">
+            <!-- Products will be loaded dynamically -->
+            <div class="loading-spinner"><div class="spinner"></div></div>
+        </div>
+</section>
+
+<!-- PAGINATION -->
+<div id="product-pagination" class="pagination" style="text-align:center; margin:20px;"></div>
+
+<script>
+let currentPage = 1;
+
+async function loadProductsPage(page = 1) {
+    try {
+        const res = await fetch(`http://localhost:5000/api/products?page=${page}`);
+        const data = await res.json();
+
+        const container = document.querySelector('.products-grid');
+        const pager = document.getElementById('product-pagination');
+
+        if (!data.success) {
+            container.innerHTML = "Không có sản phẩm";
+            return;
+        }
+
+        // ✅ DÙNG lại render chuẩn từ main.js
+        renderProducts(data.data, container);
+
+        // pagination
+        pager.innerHTML = '';
+        for (let i = 1; i <= data.totalPages; i++) {
+            const btn = document.createElement('a');
+            btn.textContent = i;
+
+            if (i === page) {
+                btn.style.background = 'black';
+                btn.style.color = 'white';
+            }
+
+            btn.onclick = () => {
+                currentPage = i;
+                loadProductsPage(i);
+            };
+
+            pager.appendChild(btn);
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.querySelector('.products-grid').innerHTML = "Lỗi load sản phẩm";
+    }
+}
+
+// load lần đầu
+loadProductsPage(1);
+</script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <img src="images/uploads/nen.png" alt="logo">
+                    <div class="logo-text" style="color: white;">
+                        <span>ĐẠT</span>
+                        TESLA MOTORS
+                    </div>
+                </div>
+                <p>Đại lý xe điện Tesla chính hãng tại Việt Nam.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h4>Liên hệ</h4>
+                <ul class="footer-links footer-contact">
+                    <li><i class="fas fa-phone"></i><span>1900 1234</span></li>
+                    <li><i class="fas fa-envelope"></i><span>contact@dattesla.vn</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 ĐẠT TESLA MOTORS. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top"><i class="fas fa-chevron-up"></i></button>
+    <div class="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ĐẠT TESLA MOTORS - Đại lý xe Tesla chính hãng</title>
+    <meta name="description" content="ĐẠT TESLA MOTORS - Đại lý xe điện Tesla chính hãng tại Việt Nam. Model S, Model 3, Model X, Model Y, Cybertruck.">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    
+    <!-- Bootstrap -->
+    <link href="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <span>🚗 Miễn phí giao xe toàn quốc - Bảo hành chính hãng 8 năm - Hỗ trợ trả góp 0%</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="/" class="logo">
+                <img src="images/uploads/nen.png" alt="logo">
+                <div class="logo-text">
+                    <span>ĐẠT</span>
+                    TESLA MOTORS
+                </div>
+            </a>
+
+            <!-- Navigation Menu -->
+            <ul class="nav-menu">
+                <li><a href="/" class="active">Trang chủ</a></li>
+                <li><a href="/products">Sản phẩm</a></li>
+                <li><a href="/news">Tin tức</a></li>
+                <li><a href="/why-tesla">Tại sao chọn Tesla?</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+
+            <!-- Nav Actions -->
+            <div class="nav-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm kiếm xe...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <a href="/cart" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+                
+                <button class="theme-toggle" title="Chuyển đổi theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <div class="mobile-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-close"><i class="fas fa-times"></i></div>
+        <a href="/">Trang chủ</a>
+        <a href="/products">Sản phẩm</a>
+        <a href="/news">Tin tức</a>
+        <a href="/why-tesla">Tại sao chọn Tesla?</a>
+        <a href="/cart">Giỏ hàng</a>
+        <a href="#contact">Liên hệ</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Trải nghiệm Tương lai<br>Với Xe Điện Tesla</h1>
+            <p>Khám phá dòng xe điện cao cấp với công nghệ tiên tiến nhất. An toàn, mạnh mẽ và thân thiện với môi trường.</p>
+            <div class="hero-buttons">
+                <a href="/products" class="btn btn-primary">
+                    <i class="fas fa-car"></i> Khám phá ngay
+                </a>
+                <a href="https://www.youtube.com/watch?v=YAtLTLiqNwg" class="btn btn-outline" target="_blank">
+                    <i class="fas fa-play"></i> Xem video
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1200" alt="Tesla Model S">
+        </div>
+    </section>
+<!-- banner -->
+    <section class="banner-belt" aria-label="Bộ banner">
+            <div class="belt-track">
+            <img src="images/banner1.jpg" alt="Banner 1">
+            <img src="images/banner2.jpg" alt="Banner 2">
+            <img src="images/banner3.jpg" alt="Banner 3">
+            <img src="images/banner4.jpg" alt="Banner 4">
+            <img src="images/banner1.jpg" alt="" aria-hidden="true">
+            <img src="images/banner2.jpg" alt="" aria-hidden="true">
+            <img src="images/banner3.jpg" alt="" aria-hidden="true">
+            <img src="images/banner4.jpg" alt="" aria-hidden="true">
+        </div>
+    </section>
+
+
+    <!-- Featured Products -->
+    <section class="section" id="featured">
+        <div class="section-header">
+            <h2>Xe Tesla Nổi Bật</h2>
+            <p>Khám phá các dòng xe điện cao cấp nhất từ Tesla</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="products-grid">
+            <!-- Products will be loaded dynamically -->
+            <div class="loading-spinner"><div class="spinner"></div></div>
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/products" class="btn btn-secondary">
+                Xem tất cả sản phẩm <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="section">
+        <div class="section-header">
+            <h2>Tin Tức Mới Nhất</h2>
+            <p>Cập nhật những thông tin mới nhất về Tesla và xe điện</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="news-grid">
+            <!-- News will be loaded dynamically -->
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--tesla-red), var(--tesla-red-dark)); padding: 80px 24px; text-align: center; color: white;">
+        <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 16px;">Sẵn sàng trải nghiệm Tesla?</h2>
+        <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 32px;">Đặt lịch lái thử miễn phí ngay hôm nay</p>
+        <a href="/products" class="btn btn-secondary" style="background: white; color: var(--tesla-red);">
+            <i class="fas fa-calendar-check"></i> Đặt lịch lái thử
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                <img src="images/uploads/nen.png" alt="logo">
+                    <div class="logo-text" style="color: white;">
+                        <span>ĐẠT</span>
+                        TESLA MOTORS
+                    </div>
+                </div>
+                <p>Đại lý xe điện Tesla chính hãng tại Việt Nam. Cam kết mang đến trải nghiệm mua xe tốt nhất cho khách hàng.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h4>Sản phẩm</h4>
+                <ul class="footer-links">
+                    <li><a href="/product/tesla-model-s">Tesla Model S</a></li>
+                    <li><a href="/product/tesla-model-3">Tesla Model 3</a></li>
+                    <li><a href="/product/tesla-model-x">Tesla Model X</a></li>
+                    <li><a href="/product/tesla-model-y">Tesla Model Y</a></li>
+                    <li><a href="/product/tesla-cybertruck">Tesla Cybertruck</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Hỗ trợ</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hướng dẫn mua hàng</a></li>
+                    <li><a href="#">Chính sách bảo hành</a></li>
+                    <li><a href="#">Trả góp 0%</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Liên hệ</h4>
+                <ul class="footer-links footer-contact">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span>1900 1234</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>contact@dattesla.vn</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>8:00 - 21:00, T2 - CN</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 ĐẠT TESLA MOTORS. All rights reserved.</p>
+            <p>Designed with ❤️ in Vietnam</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js)"></script>
+    <script src="/js/main.js"></script>
+    <script>
+    fetch('/api/auth/check')
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            window.location.href = '/login.html';
+       }
+    });
+    </script>
+</body>
+</html>

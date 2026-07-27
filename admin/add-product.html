@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<title>Thêm xe - Admin</title>
+
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+<!-- SIDEBAR -->
+
+<aside class="admin-sidebar">
+
+<div class="logo">
+<div class="logo-icon">ĐT</div>
+<div class="logo-text" style="color:white">
+<span>ADMIN</span>
+TESLA MOTORS
+</div>
+</div>
+
+<ul class="admin-nav">
+
+<li><a href="/admin/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+<li><a href="/admin/products.html"><i class="fas fa-car"></i> Sản phẩm</a></li>
+
+<li><a href="/admin/orders.html"><i class="fas fa-shopping-bag"></i> Đơn hàng</a></li>
+
+<li><a href="/admin/news.html"><i class="fas fa-newspaper"></i> Tin tức</a></li>
+
+<li><a href="/admin/settings.html"><i class="fas fa-cog"></i> Cài đặt</a></li>
+
+</ul>
+
+</aside>
+
+<!-- CONTENT -->
+
+<main class="admin-content">
+
+<div class="admin-header">
+<h1>Thêm xe Tesla</h1>
+</div>
+
+<div class="admin-table">
+
+<form id="addProductForm" enctype="multipart/form-data">
+
+<input name="name" placeholder="Tên xe" required>
+
+<br><br>
+
+<input name="price" placeholder="Giá" required>
+
+<br><br>
+
+<textarea name="description" placeholder="Mô tả"></textarea>
+
+<br><br>
+
+<input type="file" name="image">
+
+<br><br>
+
+<button class="btn btn-primary">Thêm xe</button>
+
+</form>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+document.getElementById("addProductForm").addEventListener("submit",async function(e){
+
+e.preventDefault()
+
+const formData = new FormData(this)
+
+await fetch("/api/products",{
+method:"POST",
+body:formData
+})
+
+alert("Thêm xe thành công")
+
+})
+
+</script>
+
+</body>
+</html>

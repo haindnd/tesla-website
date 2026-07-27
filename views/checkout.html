@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - ĐẠT TESLA MOTORS</title>
+    
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link href="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <span>🔒 Thanh toán an toàn - Bảo mật thông tin 100%</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="images/uploads/nen.png" alt="logo">
+                <div class="logo-text">
+                    <span>ĐẠT</span>
+                    TESLA MOTORS
+                </div>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="/">Trang chủ</a></li>
+                <li><a href="/products">Sản phẩm</a></li>
+                <li><a href="/cart">Giỏ hàng</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="/cart" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+                
+                <button class="theme-toggle" title="Chuyển đổi theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Thanh Toán</h1>
+        <div class="breadcrumb">
+            <a href="/">Trang chủ</a>
+            <span>/</span>
+            <a href="/cart">Giỏ hàng</a>
+            <span>/</span>
+            <span>Thanh toán</span>
+        </div>
+    </div>
+
+    <!-- Checkout Content -->
+    <div class="checkout-container">
+        <div class="checkout-form">
+            <h3><i class="fas fa-user"></i> Thông tin khách hàng</h3>
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="full_name">Họ và tên *</label>
+                        <input type="text" id="full_name" name="full_name" required placeholder="Nhập họ và tên">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="Nhập số điện thoại">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Nhập email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Địa chỉ giao xe *</label>
+                    <textarea id="address" name="address" rows="3" required placeholder="Nhập địa chỉ chi tiết"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="note">Ghi chú</label>
+                    <textarea id="note" name="note" rows="2" placeholder="Ghi chú thêm (nếu có)"></textarea>
+                </div>
+
+                <h3 style="margin-top: 30px;"><i class="fas fa-credit-card"></i> Phương thức thanh toán</h3>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 15px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 10px;">
+                        <input type="radio" name="payment" value="cod" checked>
+                        <i class="fas fa-money-bill-wave" style="color: var(--tesla-red);"></i>
+                        <span>Thanh toán khi nhận xe (COD)</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 15px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 10px;">
+                        <input type="radio" name="payment" value="bank">
+                        <i class="fas fa-university" style="color: var(--tesla-red);"></i>
+                        <span>Chuyển khoản ngân hàng</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 15px; background: var(--bg-secondary); border-radius: 12px;">
+                        <input type="radio" name="payment" value="installment">
+                        <i class="fas fa-percentage" style="color: var(--tesla-red);"></i>
+                        <span>Trả góp 0% (Liên hệ tư vấn)</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px; padding: 18px;">
+                    <i class="fas fa-lock"></i> Xác nhận đặt hàng
+                </button>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <!-- Order summary will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="logo-icon">ĐT</div>
+                    <div class="logo-text" style="color: white;">
+                        <span>ĐẠT</span>
+                        TESLA MOTORS
+                    </div>
+                </div>
+                <p>Đại lý xe điện Tesla chính hãng tại Việt Nam.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h4>Liên hệ</h4>
+                <ul class="footer-links footer-contact">
+                    <li><i class="fas fa-phone"></i><span>1900 1234</span></li>
+                    <li><i class="fas fa-envelope"></i><span>contact@dattesla.vn</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 ĐẠT TESLA MOTORS. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top"><i class="fas fa-chevron-up"></i></button>
+    <div class="toast-container"></div>
+
+    <script src="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js)"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
