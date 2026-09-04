@@ -7,8 +7,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 5000;
-
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
@@ -54,10 +53,12 @@ app.use('/admin', requireAuth, express.static('admin'));
 
 // MySQL Connection Pool
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'dat_tesla_motors',
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'dat_tesla_motors',
+    port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
